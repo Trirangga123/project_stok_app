@@ -11,9 +11,30 @@ use Illuminate\Support\Facades\Auth;
 class barangKeluarController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('Barang.BarangKeluar.Barangkeluar');
+        $query = BarangKeluar::with(
+            'getStok',
+            'getPelanggan',
+            'getUser',
+        );
+
+        if ($request->filled('tanggal_awal') && $request->filled('tangal_akhir')){
+            $query->whereBetween('tgl_buat', [
+                $request->tanggal_awal,
+                $request->tanggal_akhir,
+            ]);
+        }
+
+        $query->orderBy('created_at', 'desc');
+        $getBarangKeluar = $query->paginate(10);
+        $getTotalPendapatan = BarangKeluar::sum('sub_total');
+
+        return view('Barang.BarangKeluar.Barangkeluar', compact(
+            'getBarangKeluar',
+            'getTotalPendapatan',
+        ));
+           
     }
     public function create()
     {
@@ -43,20 +64,13 @@ class barangKeluarController extends Controller
         $kode_transaksi = 'TRK'. ($id+1). '/' . $date;
         $pelanggan = pelanggan::all();
 
-
-
-
-
-
-
-
-
         return view('Barang.BarangKeluar.add-Barangkeluar', compact(
             'data',
             'kode_transaksi',
             'pelanggan'
         ));
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -93,8 +107,6 @@ class barangKeluarController extends Controller
             'jenis_pembayaran',
             'getBarang',
         ));
-
-
 
     }
 
@@ -136,7 +148,7 @@ class barangKeluarController extends Controller
                  $hitung = $request->jumlah_beli * $request->harga_jual;
                  $totalDiskon  = $hitung * $nilaiDiskon;
                  $subTotal = $hitung - $totalDiskon;
-            $save->sub_total = $totalDiskon;
+            $save->sub_total = $subTotal;
         } else {
             $hitung = $request->jumlah_beli * $request->harga_jual;
             $save->sub_total = $hitung;
@@ -146,32 +158,12 @@ class barangKeluarController extends Controller
         $save->tgl_buat = $request->tgl_faktur;
         $save->save();
 
+        dd($save);
         return redirect('/barang-keluar')->with(
             'message',
             'Barang keluar add'
         );
 
-
-
-
-
     }
-
-
-
-
-
-
-    // tgl_faktur
-    // tgl_jatuh_tempo
-    // pelanggan_id
-    // jenis_pembayaran
-    // barang_id
-    // jumlah_beli
-    // harga_jual
-    // diskon
-    // sub_total
-    // user_id
-    // tgl_buat
 
 }

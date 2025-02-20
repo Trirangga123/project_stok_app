@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <h3 class="mb-3 mt-2">Barang Keluar</h3>
+    <h3 class="mt-2 mb-3">Barang Keluar</h3>
     <nav aria-label="breadcrumb" class="mb-1">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active" aria-current="page">Barang Keluar</li>
@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex">
-                        <div class="w-100 pt-1">
+                        <div class="pt-1 w-100">
                             <strong>Barang Keluar</strong>
                         </div>
                         <div class="w-100 text-end">
@@ -31,7 +31,7 @@
                 </div>
                 <div class="card-body">
 
-                    <div class="container-fluid mt-3 mb-4">
+                    <div class="mt-3 mb-4 container-fluid">
                         <div class="row">
                             <div class="col-6">
                                 <form action="" method="get">
@@ -87,7 +87,7 @@
                                             <div class="card">
                                                 <div class="card-body">
                                                     <h3>Total Pendapatan</h3>
-                                                    {{-- <h4>{{ 'Rp ' . number_format($getTotalPendapatan, 0, ',', '.') }}</h4> --}}
+                                                    <h4>{{ 'Rp' . number_format($getTotalPendapatan, 0, ',', '.') }}</h4>
                                                 </div>
                                             </div>
                                             {{-- <h5>Total Pendapatan</h5> --}}
@@ -97,7 +97,7 @@
                             @endif
                         </div>
                         <div class="row">
-                            <div class="col mt-4">
+                            <div class="mt-4 col">
                                 <a
                                     href="{{ url('/barang-keluar/add') }}"
                                     class="btn btn-primary btn-md rounded-5">
@@ -121,7 +121,7 @@
                             <th class="text-center">Aksi</th>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($getBarangKeluar as $item)
+                            @foreach ($getBarangKeluar as $item)
                                 <tr>
                                     <td class="text-center">
                                         {{ (($getBarangKeluar->currentPage() - 1) * $getBarangKeluar->perPage()) + $loop->iteration }}
@@ -144,10 +144,10 @@
                                         </a>
                                     </td>
                                 </tr>
-                            @endforeach --}}
+                            @endforeach
                         </tbody>
                     </table>
-                    {{-- {{ $getBarangKeluar->links() }} --}}
+                    {{ $getBarangKeluar->links() }}
 
                 </div>
             </div>
